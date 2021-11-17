@@ -14,6 +14,8 @@ import ru.job4j.forum.model.User;
 import ru.job4j.forum.service.PostServiceInterface;
 import ru.job4j.forum.service.UserService;
 
+import java.util.Optional;
+
 @Controller
 public class PostControl {
     private final PostServiceInterface postService;
@@ -27,7 +29,11 @@ public class PostControl {
 
     @GetMapping("/discuss")
     public String discuss(@RequestParam("id") int id, Model model) {
-        Post post = postService.findById(id).get();
+        Optional<Post> postOptional = postService.findById(id);
+        if (postOptional.isEmpty()) {
+            throw new IllegalArgumentException("Поста с таким id не существует!");
+        }
+        Post post = postOptional.get();
         model.addAttribute("post", post);
         model.addAttribute("user", SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal());
