@@ -1,5 +1,6 @@
 package ru.job4j.forum.service;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.job4j.forum.model.Post;
 import ru.job4j.forum.repository.PostRepository;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PostService {
+public class PostService implements PostServiceInterface {
 
     private final PostRepository postRepository;
 
@@ -17,20 +18,26 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
+    @Override
     public Post saveOrUpdate(Post post) {
-        return postRepository.saveOrUpdate(post);
+        return postRepository.save(post);
     }
 
+    @Override
     public List<Post> getAll() {
-        return postRepository.getAll().stream().toList();
+        List<Post> posts = new ArrayList<>();
+        postRepository.findAll(Sort.by("id").ascending())
+        .forEach(posts::add);
+        return posts;
     }
 
+    @Override
     public void deleteById(int id) {
         postRepository.deleteById(id);
     }
 
+    @Override
     public Optional<Post> findById(int id) {
-        Post post = postRepository.findById(id);
-        return Optional.ofNullable(post);
+        return postRepository.findById(id);
     }
 }
