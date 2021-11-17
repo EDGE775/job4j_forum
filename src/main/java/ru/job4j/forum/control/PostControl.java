@@ -1,5 +1,8 @@
 package ru.job4j.forum.control;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,25 +10,34 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.job4j.forum.model.Post;
+import ru.job4j.forum.model.User;
 import ru.job4j.forum.service.PostServiceInterface;
+import ru.job4j.forum.service.UserService;
 
 @Controller
 public class PostControl {
     private final PostServiceInterface postService;
 
-    public PostControl(PostServiceInterface postService) {
+    private final UserService userService;
+
+    public PostControl(PostServiceInterface postService, UserService userService) {
         this.postService = postService;
+        this.userService = userService;
     }
 
     @GetMapping("/discuss")
     public String discuss(@RequestParam("id") int id, Model model) {
         Post post = postService.findById(id).get();
         model.addAttribute("post", post);
+        model.addAttribute("user", SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal());
         return "post/post";
     }
 
     @GetMapping("/create")
-    public String create(Post post) {
+    public String create(Model model, Post post) {
+        model.addAttribute("user", SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal());
         return "post/edit";
     }
 
@@ -38,10 +50,10 @@ public class PostControl {
 
     @PostMapping("/save")
     public String save(@ModelAttribute Post post) {
-        int id = post.getId();
-        if (id != 0) {
-            post.setId(id);
-        }
+        UserDetails details = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+        User user = userService.findUserByName(details.getUsername());
+        post.setUser(user);
         postService.saveOrUpdate(post);
         return "redirect:/";
     }

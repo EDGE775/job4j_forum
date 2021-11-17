@@ -18,6 +18,10 @@ public class Post {
 
     private Calendar created = Calendar.getInstance();
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Post() {
     }
 
@@ -65,6 +69,14 @@ public class Post {
         this.created = created;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -77,11 +89,12 @@ public class Post {
         return id == post.id
                 && Objects.equals(name, post.name)
                 && Objects.equals(description, post.description)
+                && Objects.equals(user, post.user)
                 && Objects.equals(created, post.created);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, created);
+        return Objects.hash(id, name, description, created, user);
     }
 }

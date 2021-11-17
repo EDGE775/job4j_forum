@@ -39,6 +39,7 @@
                     <tr>
                         <th scope="col">Номер</th>
                         <th scope="col">Описание</th>
+                        <th scope="col">Автор</th>
                         <th scope="col">Дата</th>
                         <th scope="col"></th>
                     </tr>
@@ -53,6 +54,9 @@
                                 <a href="<c:url value="/discuss?id=${post.id}"/>">
                                     <c:out value="${post.name}"/>
                                 </a>
+                            </td>
+                            <td class="align-middle">
+                                <c:out value="${post.user.username}"/>
                             </td>
                             <td class="align-middle">
                                 <fmt:formatDate value="${post.created.time}" pattern="yy.MM.dd HH:mm:ss"/>

@@ -10,5 +10,8 @@
         <li class="nav-item">
             <a class="nav-link" href="<c:url value='/create'/>">Добавить пост</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" href="<c:url value='/logout'/>">${user.username} | Выйти</a>
+        </li>
     </ul>
 </div>

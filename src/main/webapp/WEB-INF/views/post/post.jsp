@@ -37,7 +37,8 @@
                 <c:out value="${post.description}"/>
             </div>
             <div class="card-footer">
-                Пользователь 1, <fmt:formatDate value="${post.created.time}" pattern="yy.MM.dd HH:mm:ss"/>
+                <c:out value="${post.user.username}, "/>
+                <fmt:formatDate value="${post.created.time}" pattern="yy.MM.dd HH:mm:ss"/>
             </div>
         </div>
     </div>
