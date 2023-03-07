@@ -47,7 +47,7 @@ docker-compose build
 ```
 Run.
 ```
-docker-compose up
+docker-compose up -d
 ```
 
 ## Status
