@@ -5,7 +5,7 @@
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
-* [Installation](#installation)
+* [Run project](#run-project)
 * [Status](#status)
 * [Screenshots](#screenshots)
 * [Contact](#contact)
@@ -26,9 +26,28 @@ The application contains authorization and registration.
 * Heroku
 * Junit
 
-## Installation
+## Run project
+### Using Java CLI
+Compile to jar.
 ```
 mvn install
+```
+With your settings.
+```
+java -jar target/job4j_forum.jar --db=forum --user=postgres --password=password --port=your_port
+```
+OR default settings (db=forum, user=postgres, password=password, port=8080).
+```
+java -jar target/job4j_forum.jar
+```
+### Using Docker
+Build.
+```
+docker-compose build
+```
+Run.
+```
+docker-compose up
 ```
 
 ## Status
